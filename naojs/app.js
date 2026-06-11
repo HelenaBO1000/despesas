@@ -32,7 +32,9 @@ const carregarLista = ()=>{//1.2 Adicionar despesa na lista
     })
     
 }
-
+/**
+ * Gera média, maior e menor gastos, e indica gastos acima de 100 reais.
+ */
 const gerarEstatisticas = () =>{
     const totalDeGasto = despesaList.reduce((atum, despesa) =>{
         return atum + despesa.valor
@@ -51,6 +53,33 @@ const gerarEstatisticas = () =>{
         console.log(dive)
 }
 
+const gerarGrafico = () =>{ 
+const ctx = document.createElement("canvas")
+const divGrafico = document.getElementById('grafico')
+divGrafico.innerHTML = ""
+divGrafico.appendChild(ctx)
+const gastoLabel = despesaList.map(gasto => gasto.descricao)
+const gastosXablau =  despesaList.map(gasto => gasto.valor)
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: gastoLabel,
+      datasets: [{
+        label: 'reais gastos',
+        data: gastosXablau,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
 const btn = document.querySelector("#btnAdicionar")
 btn.addEventListener("click", ()=> {//1. Ao clicar no btnAdicionar
     const vale = parseFloat(document.querySelector("#valor").value)
@@ -58,6 +87,7 @@ btn.addEventListener("click", ()=> {//1. Ao clicar no btnAdicionar
     criarDespesa()
     carregarLista()
     gerarEstatisticas()
+    gerarGrafico()
 }
 })
 
